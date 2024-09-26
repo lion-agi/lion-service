@@ -1,6 +1,6 @@
-import tiktoken
 from abc import abstractmethod
 
+import tiktoken
 from pydantic import BaseModel, Field, field_validator
 
 
