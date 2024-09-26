@@ -1,9 +1,10 @@
 from collections import deque
-from datetime import datetime, UTC, timezone
+from datetime import UTC, datetime, timezone
 
 from pydantic import BaseModel, Field
 
-from .complete_request_info import CompleteRequestInfo, CompleteRequestTokenInfo
+from .complete_request_info import (CompleteRequestInfo,
+                                    CompleteRequestTokenInfo)
 
 
 class RateLimiter(BaseModel):
