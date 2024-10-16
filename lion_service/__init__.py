@@ -1,3 +1,4 @@
+from .imodel import iModel
 from .rate_limiter import RateLimiter, RateLimitError
 from .service import Service, register_service
 from .service_util import invoke_retry
@@ -10,4 +11,5 @@ __all__ = [
     "__version__",
     "RateLimitError",
     "invoke_retry",
+    "iModel",
 ]

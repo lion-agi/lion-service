@@ -157,3 +157,6 @@ class iModel:
 
     async def invoke(self, **kwargs):
         return await self.request_model.invoke(**kwargs)
+
+
+__all__ = ["iModel"]
