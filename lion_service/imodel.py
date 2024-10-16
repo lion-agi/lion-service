@@ -1,7 +1,11 @@
 import warnings
 
 from lion_service.service import Service
-from lion_service.service_match_util import match_service, match_task_method, match_parameters
+from lion_service.service_match_util import (
+    match_parameters,
+    match_service,
+    match_task_method,
+)
 
 
 class iModel:
@@ -14,7 +18,7 @@ class iModel:
         api_key_schema: str = None,
         interval_tokens: int = None,
         interval_requests: int = None,
-        **kwargs
+        **kwargs,
     ):
         if api_key is not None:
             api_key = api_key
@@ -27,7 +31,7 @@ class iModel:
                 "'config' is deprecated in 'iModel'. Please pass configurations directly as keyword arguments. "
                 "If 'config' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "provider_schema" in kwargs:
             warnings.warn(
@@ -35,14 +39,14 @@ class iModel:
                 "Pydantic models for the schema structure. "
                 "If 'provider_schema' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "endpoint" in kwargs:
             warnings.warn(
                 "'endpoint' is deprecated in 'iModel'. Please specify 'task' instead. "
                 "If 'endpoint' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
             task = kwargs["endpoint"]
         if "token_encoding_name" in kwargs:
@@ -50,14 +54,14 @@ class iModel:
                 "'token_encoding_name' is deprecated in 'iModel' as it is now automatically detected. "
                 "To explicitly set the encoding method, please refer to TokenCalculator.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "interval" in kwargs:
             warnings.warn(
                 "'interval' is deprecated in 'iModel' as the unit is now set per minute. "
                 "If 'interval' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "service" in kwargs:
             warnings.warn(
@@ -65,28 +69,28 @@ class iModel:
                 "details about service configurations, refer to 'lion_service' or the corresponding service's package. "
                 "If 'service' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "allowed_parameters" in kwargs:
             warnings.warn(
                 "'allowed_parameters' is deprecated in 'iModel'. If 'allowed_parameters' is a parameter "
                 "name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "device" in kwargs:
             warnings.warn(
                 "'device' is deprecated in 'iModel'. "
                 "If 'device' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
         if "costs" in kwargs:
             warnings.warn(
                 "'cost' is deprecated in 'iModel'. "
                 "If 'costs' is a parameter name for further request settings, it will still be passed along.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
 
         if isinstance(provider, str):
@@ -94,24 +98,36 @@ class iModel:
         elif isinstance(provider, Service):
             self.service = provider
             if api_key:
-                warnings.warn("A Service instance was provided along with api key info."
-                              "The the separately provided api_key or api_key_schema will be ignored.")
+                warnings.warn(
+                    "A Service instance was provided along with api key info."
+                    "The the separately provided api_key or api_key_schema will be ignored."
+                )
         else:
-            raise ValueError("Invalid provider. Please provide a valid provider name or valid service object.")
+            raise ValueError(
+                "Invalid provider. Please provide a valid provider name or valid service object."
+            )
 
         task_method_list = match_task_method(task, self.service)
         if len(task_method_list) == 0:
-            raise ValueError("No matching task found. "
-                             "Please refer to the service provider's API to provide a valid task.")
+            raise ValueError(
+                "No matching task found. "
+                "Please refer to the service provider's API to provide a valid task."
+            )
         if len(task_method_list) > 1:
-            raise ValueError(f"Multiple possible tasks found. Please specify: {task_method_list}")
+            raise ValueError(
+                f"Multiple possible tasks found. Please specify: {task_method_list}"
+            )
         self.task = task_method_list[0]
         task_method = getattr(self.service, task_method_list[0])
-        task_params = match_parameters(task_method, model, interval_tokens, interval_requests)
+        task_params = match_parameters(
+            task_method, model, interval_tokens, interval_requests
+        )
         try:
             self.request_model = task_method(**task_params)
         except Exception as e:
-            raise ValueError(f"{self.task} requires the following to be provided as input: {e}.")
+            raise ValueError(
+                f"{self.task} requires the following to be provided as input: {e}."
+            )
 
         self.model = model
         self.configs = kwargs
@@ -121,7 +137,9 @@ class iModel:
     def parse_to_data_model(self, **kwargs):
         if kwargs.get("model") and self.model:
             if kwargs.get("model") != self.model:
-                raise ValueError(f"Models are inconsistent. This iModel is for {self.model}")
+                raise ValueError(
+                    f"Models are inconsistent. This iModel is for {self.model}"
+                )
 
         output = {}
         for invoke_param, data_model in self.data_model.items():
