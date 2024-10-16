@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "lion-service"
-version = "0.1.1"
+version = "1.0.0"
 description = ""
 authors = ["OceanLi <122793010+ohdearquant@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pydantic = "^2.9.2"
+pydantic = "^2.0.0"
 tiktoken = "^0.7.0"
 
 
@@ -15,6 +15,7 @@ tiktoken = "^0.7.0"
 pytest = "^8.3.3"
 black = "^24.8.0"
 isort = "^5.13.2"
+pre-commit = "^4.0.1"
 
 [build-system]
 requires = ["poetry-core"]

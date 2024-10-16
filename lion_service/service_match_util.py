@@ -1,7 +1,7 @@
-from os import getenv
-import re
 import inspect
+import re
 import warnings
+from os import getenv
 
 from .service import ServiceSetting
 
@@ -28,28 +28,36 @@ def match_service(service_name: str, **kwargs):
         for service in ServiceSetting.services.values():
             if isinstance(service, OpenAIService):
                 if (
-                    check_key_match(service.api_key, api_key) and
-                    check_key_match(service.openai_organization, openai_organization) and
-                    check_key_match(service.openai_project, openai_project)
+                    check_key_match(service.api_key, api_key)
+                    and check_key_match(
+                        service.openai_organization, openai_organization
+                    )
+                    and check_key_match(service.openai_project, openai_project)
                 ):
                     return service
 
         # when no matching
-        return OpenAIService(api_key=api_key,
-                             openai_organization=openai_organization,
-                             openai_project=openai_project)
+        return OpenAIService(
+            api_key=api_key,
+            openai_organization=openai_organization,
+            openai_project=openai_project,
+        )
 
     raise ValueError(f"Service {service_name} is not available")
 
 
 def match_task_method(task_name, service_obj):
     def clean_name(name):
-        return re.sub(r'[^a-zA-Z0-9]', '', name).lower()
+        return re.sub(r"[^a-zA-Z0-9]", "", name).lower()
 
     task_name = clean_name(task_name)
     if task_name.endswith("s"):
         task_name = task_name[:-1]
-    methods = [method_name for method_name in dir(service_obj) if task_name in clean_name(method_name)]
+    methods = [
+        method_name
+        for method_name in dir(service_obj)
+        if task_name in clean_name(method_name)
+    ]
     return methods
 
 
@@ -63,12 +71,16 @@ def match_parameters(method, model, interval_tokens, interval_requests):
     else:
         # no limit_requests but interval_requests provided
         if interval_requests is not None:
-            warnings.warn(f"The system does not support tracking limit requests per minute for {method.__name__}")
+            warnings.warn(
+                f"The system does not support tracking limit requests per minute for {method.__name__}"
+            )
     if "limit_tokens" in method_params:
         kwargs["limit_tokens"] = interval_tokens
     else:
         # no limit_tokens but interval_tokens provided
         if interval_tokens is not None:
-            warnings.warn(f"The system does not support tracking limit tokens per minute for {method.__name__}")
+            warnings.warn(
+                f"The system does not support tracking limit tokens per minute for {method.__name__}"
+            )
 
     return kwargs
