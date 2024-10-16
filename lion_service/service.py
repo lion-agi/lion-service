@@ -16,9 +16,7 @@ def register_service(cls):
 
 class ServiceSetting(object):
     _instance = None
-
-    def __init__(self):
-        self.services = {}
+    services = {}
 
     def __new__(cls):
         if cls._instance is None:
