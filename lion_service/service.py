@@ -1,5 +1,7 @@
 class Service:
-    pass
+
+    def list_tasks(self):
+        pass
 
 
 def register_service(cls):

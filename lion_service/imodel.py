@@ -158,5 +158,8 @@ class iModel:
     async def invoke(self, **kwargs):
         return await self.request_model.invoke(**kwargs)
 
+    def list_tasks(self):
+        return self.service.list_tasks()
+
 
 __all__ = ["iModel"]
