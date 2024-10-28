@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lion-service"
-version = "1.0.2"
+version = "1.0.3"
 description = ""
 authors = ["OceanLi <122793010+ohdearquant@users.noreply.github.com>"]
 readme = "README.md"
@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.9"
 pydantic = "^2.0.0"
 tiktoken = "^0.7.0"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
