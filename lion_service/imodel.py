@@ -1,8 +1,11 @@
 import warnings
 
 from lion_service.service import Service
-from lion_service.service_match_util import (match_parameters, match_service,
-                                             match_task_method)
+from lion_service.service_match_util import (
+    match_parameters,
+    match_service,
+    match_task_method,
+)
 
 
 class iModel:
