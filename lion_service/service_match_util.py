@@ -19,7 +19,12 @@ def match_service(service_name: str, **kwargs):
         return key1 == key2
 
     if service_name == "openai":
-        from lion_openai import OpenAIService
+        try:
+            from lion_openai import OpenAIService
+        except ImportError:
+            raise ImportError(
+                "To use OpenAI, please install the `lion_openai` package"
+            )
 
         api_key = kwargs.get("api_key")
         openai_organization = kwargs.get("openai_organization")
@@ -42,6 +47,66 @@ def match_service(service_name: str, **kwargs):
             openai_organization=openai_organization,
             openai_project=openai_project,
         )
+
+    elif service_name == "anthropic":
+        try:
+            from lion_anthropic import AnthropicService
+        except ImportError:
+            raise ImportError(
+                "To use Anthropic, please install the `lion_anthropic` package"
+            )
+
+        api_key = kwargs.get("api_key")
+        api_version = kwargs.get("api_version", "2023-06-01")
+
+        for service in ServiceSetting.services.values():
+            if isinstance(service, AnthropicService):
+                if check_key_match(
+                    service.api_key, api_key
+                ) and check_key_match(service.api_version, api_version):
+                    return service
+
+        # when no matching
+        return AnthropicService(
+            api_key=api_key,
+            api_version=api_version,
+        )
+
+    elif service_name == "perplexity":
+        try:
+            from lion_perplexity import PerplexityService
+        except ImportError:
+            raise ImportError(
+                "To use Perplexity, please install the `lion_perplexity` package"
+            )
+
+        api_key = kwargs.get("api_key")
+        api_version = kwargs.get("api_version", "2023-06-01")
+
+        for service in ServiceSetting.services.values():
+            if isinstance(service, PerplexityService):
+                if check_key_match(service.api_key, api_key):
+                    return service
+
+        # when no matching
+        return PerplexityService(api_key=api_key)
+
+    elif service_name == "groq":
+        try:
+            from lion_groq import GroqService
+        except ImportError:
+            raise ImportError(
+                "To use Groq, please install the `lion_groq` package"
+            )
+
+        api_key = kwargs.get("api_key")
+        for service in ServiceSetting.services.values():
+            if isinstance(service, GroqService):
+                if check_key_match(service.api_key, api_key):
+                    return service
+
+        # when no matching
+        return GroqService(api_key=api_key)
 
     raise ValueError(f"Service {service_name} is not available")
 
