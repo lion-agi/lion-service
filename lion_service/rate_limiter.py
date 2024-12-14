@@ -3,7 +3,10 @@ from datetime import UTC, datetime, timezone
 
 from pydantic import BaseModel, Field
 
-from .complete_request_info import CompleteRequestInfo, CompleteRequestTokenInfo
+from .complete_request_info import (
+    CompleteRequestInfo,
+    CompleteRequestTokenInfo,
+)
 
 
 class RateLimiter(BaseModel):
@@ -48,7 +51,8 @@ class RateLimiter(BaseModel):
         self.last_check_timestamp = datetime.now(UTC).timestamp()
         while self.unreleased_requests:
             if (
-                datetime.now(UTC).timestamp() - self.unreleased_requests[0].timestamp
+                datetime.now(UTC).timestamp()
+                - self.unreleased_requests[0].timestamp
                 > 60
             ):
                 release_info = self.unreleased_requests.popleft()
@@ -62,7 +66,9 @@ class RateLimiter(BaseModel):
             else:
                 break
 
-    def update_rate_limit(self, request_datetime_header, total_token_usage: int = None):
+    def update_rate_limit(
+        self, request_datetime_header, total_token_usage: int = None
+    ):
         # rate limiter tokens only tracks if there are token usage info
         # otherwise, tracks requests num
         date_format = "%a, %d %b %Y %H:%M:%S GMT"  # the format of the date string according to RFC 1123
@@ -76,14 +82,19 @@ class RateLimiter(BaseModel):
                 timestamp=request_timestamp, token_usage=total_token_usage
             )
         else:
-            complete_request_info = CompleteRequestInfo(timestamp=request_timestamp)
+            complete_request_info = CompleteRequestInfo(
+                timestamp=request_timestamp
+            )
         self.append_complete_request_token_info(complete_request_info)
 
     def check_availability(
         self, request_token_len: int = 0, estimated_output_len: int = 0
     ):
         if self.remaining_tokens is not None:
-            if request_token_len + estimated_output_len > self.remaining_tokens:
+            if (
+                request_token_len + estimated_output_len
+                > self.remaining_tokens
+            ):
                 return False
         if self.remaining_requests is not None:
             if self.remaining_requests <= 0:

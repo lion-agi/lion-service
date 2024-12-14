@@ -4,7 +4,9 @@ from functools import wraps
 from .rate_limiter import RateLimitError
 
 
-def invoke_retry(max_retries: int = 3, base_delay: int = 1, max_delay: int = 60):
+def invoke_retry(
+    max_retries: int = 3, base_delay: int = 1, max_delay: int = 60
+):
     def decorator(func):
         @wraps(func)
         async def wrapper(request_model, *args, **kwargs):
@@ -24,7 +26,10 @@ def invoke_retry(max_retries: int = 3, base_delay: int = 1, max_delay: int = 60)
 
                     # RateLimitError for Model only
                     if isinstance(e, RateLimitError):
-                        if e.requested_tokens > request_model.rate_limiter.limit_tokens:
+                        if (
+                            e.requested_tokens
+                            > request_model.rate_limiter.limit_tokens
+                        ):
                             raise ValueError(
                                 "Requested tokens exceed the model's token limit. "
                                 "Please modify the input, adjust the expected output tokens, or increase the token limit. "
@@ -42,11 +47,14 @@ def invoke_retry(max_retries: int = 3, base_delay: int = 1, max_delay: int = 60)
                     elif error_code := getattr(
                         e, "status", None
                     ):  # http request errors
-                        if error_code == 429 and "exceeded your current quota" in str(
-                            e
+                        if (
+                            error_code == 429
+                            and "exceeded your current quota" in str(e)
                         ):  # RateLimitError (account quota reached)
                             raise e
-                        if error_code == 429 or error_code >= 500:  # ServerError
+                        if (
+                            error_code == 429 or error_code >= 500
+                        ):  # ServerError
                             if retry_after := getattr(e, "headers", {}).get(
                                 "Retry-After"
                             ):
