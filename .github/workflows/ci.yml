@@ -35,18 +35,18 @@ jobs:
       if: steps.cached-uv-dependencies.outputs.cache-hit != 'true'
       run: |
         uv venv
-        uv pip install -e ".[dev]"
+        uv build
     
     - name: Run tests
       run: |
         source .venv/bin/activate
-        pytest --asyncio-mode=auto --maxfail=1 --disable-warnings tests/
+        uv run pytest --asyncio-mode=auto --maxfail=1 --disable-warnings tests/
     
     - name: Check code style and compatibility
       run: |
         source .venv/bin/activate
-        black --check .
-        isort --check-only .
+        uv run black --check .
+        uv run isort --check-only .
 
   publish:
     needs: test
