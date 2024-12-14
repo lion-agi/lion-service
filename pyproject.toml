@@ -4,7 +4,7 @@ version = "1.1.1"
 description = "lion api service system"
 authors = [
     { name = "HaiyangLi", email = "quantocean.li@gmail.com" },
-    { name = "Alina Luo", email = "unspecified" },
+    { name = "Alina Luo", email = "lluo25@fordham.edu" },
 ]
 readme = "README.md"
 requires-python = ">=3.11"
