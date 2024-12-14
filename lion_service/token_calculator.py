@@ -43,7 +43,9 @@ class TiktokenCalculator(TokenCalculator):
     ):
         enc = tiktoken.get_encoding(self.encoding_name)
         enc_text = self.encode(text)
-        tokens = [enc.decode_single_token_bytes(token_id) for token_id in enc_text]
+        tokens = [
+            enc.decode_single_token_bytes(token_id) for token_id in enc_text
+        ]
         if decode_byte_str:
             tokens = [token.decode(decoder) for token in tokens]
         return tokens

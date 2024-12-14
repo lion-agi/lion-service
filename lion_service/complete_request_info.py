@@ -6,4 +6,6 @@ class CompleteRequestInfo(BaseModel):
 
 
 class CompleteRequestTokenInfo(CompleteRequestInfo):
-    token_usage: int = Field(description="Number of tokens used in the request")
+    token_usage: int = Field(
+        description="Number of tokens used in the request"
+    )
