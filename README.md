@@ -2,8 +2,8 @@
 
 A unified interface for AI model providers (OpenAI, Anthropic, Perplexity, Groq) with rate limiting and token management.
 
-[![Version](https://img.shields.io/pypi/v/lion-service.svg)](https://pypi.org/project/lion-service/)
-[![License](https://img.shields.io/github/license/HaiyangLi/lion-service.svg)](LICENSE)
+[![Version](https://img.shields.io/pypi/v/lion-service.svg)](https://pypi.org/lion-agi/lion-service/)
+[![License](https://img.shields.io/github/license/lion-agi/lion-service.svg)](LICENSE)
 
 ## Features
 
