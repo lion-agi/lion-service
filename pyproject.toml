@@ -56,3 +56,18 @@ exclude = [".git", "__pycache__", "build", "dist", ".venv"]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["lion_service"]
+
+[tool.hatch.build]
+exclude = [
+    "dev/*",
+    "data/*",
+    "notebooks/*",
+    "tests/*",
+    "*.pyc",
+    "__pycache__",
+    "temp_logs/*",
+    "logs/*"
+]
