@@ -114,9 +114,6 @@ class iModel:
     async def invoke(self, **kwargs):
         return await self.request_model.invoke(**kwargs)
 
-    def list_tasks(self):
-        return self.service.list_tasks()
-
     @property
     def allowed_roles(self):
         return self.service.allowed_roles

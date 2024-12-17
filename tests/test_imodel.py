@@ -134,16 +134,6 @@ async def test_invoke():
     )
 
 
-def test_list_tasks():
-    """Test list_tasks method."""
-    service = MockService()
-
-    model = iModel(provider=service, task="chat", model="gpt-4")
-
-    tasks = model.list_tasks()
-    assert tasks == ["chat", "completion"]
-
-
 def test_imodel_with_api_key_schema():
     """Test initialization with api_key_schema."""
     with patch("lion_service.imodel.match_service") as mock_match:
